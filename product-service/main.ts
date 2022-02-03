@@ -1,10 +1,14 @@
+import { Client } from 'pg';
 import { App } from './src/app';
-import { StubProductService } from './src/services/product.service';
+import { PgProductService } from './src/services/product.service';
 import { ResponseService } from './src/services/response.service';
 
 import 'source-map-support/register';
 
-const app = App.create(new StubProductService(), new ResponseService())
+const dbClient = new Client();
+dbClient.connect();
+
+const app = App.create(new PgProductService(dbClient), new ResponseService())
 
 export const getProducts = () => {
     return app.getProducts()

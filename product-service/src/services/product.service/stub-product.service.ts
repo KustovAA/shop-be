@@ -2,7 +2,7 @@ import { IProductService } from './types'
 
 export class StubProductService implements IProductService {
     getProductList() {
-        return [
+        return Promise.resolve([
             {
                 "count": 4,
                 "description": "Short Product Description1",
@@ -59,10 +59,12 @@ export class StubProductService implements IProductService {
                 "price": 15,
                 "title": "ProductName"
             }
-        ]
+        ])
     }
 
-    getProductById(productId) {
-        return this.getProductList().find(({ id }) => id === productId)
+    async getProductById(productId) {
+        const productsList = await this.getProductList()
+
+        return productsList.find(({ id }) => id === productId)
     }
 }

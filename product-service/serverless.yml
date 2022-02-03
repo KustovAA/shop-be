@@ -33,6 +33,12 @@ provider:
   runtime: nodejs12.x
   stage: dev
   region: eu-west-1
+  ENV_STAGE: ${opt:stage, 'dev'}
+    PGHOST: ${self:custom.dotenvVars.PGHOST, env:PGHOST, ''}
+    PGUSER: ${self:custom.dotenvVars.PGUSER, env:PGUSER, ''}
+    PGDATABASE: ${self:custom.dotenvVars.PGDATABASE, env:PGDATABASE, ''}
+    PGPASSWORD: ${self:custom.dotenvVars.PGPASSWORD, env:PGPASSWORD, ''}
+    PGPORT: ${self:custom.dotenvVars.PGPORT, env:PGPORT, ''}
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:

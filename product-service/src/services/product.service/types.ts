@@ -1,4 +1,6 @@
+type Product = Record<string, any>
+
 export interface IProductService {
-    getProductList(): Record<string, any>[]
-    getProductById(productId: string): ReturnType<IProductService['getProductList']>[number] | undefined
+    getProductList(): Promise<Product[]>
+    getProductById(productId: string): Promise<Product | undefined>
 }
