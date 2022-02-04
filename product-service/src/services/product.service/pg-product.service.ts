@@ -58,7 +58,11 @@ export class PgProductService implements IProductService {
             await client.query(query);
 
             return {
-                ok: true
+                title,
+                description,
+                price,
+                logo,
+                count
             };
         } catch (e) {
             console.error(e)

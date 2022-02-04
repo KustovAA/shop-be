@@ -9,7 +9,7 @@ type ResultResponse = Omit<Response, 'body'> & {
 }
 
 const defaultHeaders = {
-    'Access-Control-Allow-Methods': '*',
+    'Access-Control-Allow-Methods': 'OPTIONS,POST,GET,PUT',
     'Access-Control-Allow-Headers': '*',
     'Access-Control-Allow-Origin': '*'
 };

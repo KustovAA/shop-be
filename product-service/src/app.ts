@@ -1,10 +1,10 @@
 import { IProductService } from './services/product.service';
-import { ResponseService } from './services/response.service';
+import { ResponseService } from '../../common/services/response.service';
 
 let app
 
 export class App {
-    constructor(private productService: IProductService, private responseService: ResponseService) {}
+    private constructor(private productService: IProductService, private responseService: ResponseService) {}
 
     async getProducts() {
         try {
@@ -39,7 +39,8 @@ export class App {
         }
     }
 
-    async createProduct({ body }) {
+    async createProduct(event) {
+        const body = typeof event.body === 'string' ? JSON.parse(event.body) : event.body
         try {
             const product = await this.productService.createProduct(body)
 
@@ -49,7 +50,7 @@ export class App {
 
             return this.responseService.success({
                 statusCode: 200,
-                body: product
+                body: product,
             })
         } catch (e) {
             console.error(e)

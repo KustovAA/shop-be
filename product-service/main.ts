@@ -1,7 +1,7 @@
 import { Pool } from 'pg';
 import { App } from './src/app';
 import { PgProductService } from './src/services/product.service';
-import { ResponseService } from './src/services/response.service';
+import { ResponseService } from '../common/services/response.service';
 
 import 'source-map-support/register';
 
