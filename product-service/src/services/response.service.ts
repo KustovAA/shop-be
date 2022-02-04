@@ -27,7 +27,6 @@ export class ResponseService {
     }
 
     error(err: Error, response: Response): ResultResponse {
-
         return {
             ...response,
             headers: {

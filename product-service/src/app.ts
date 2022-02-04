@@ -7,25 +7,36 @@ export class App {
     constructor(private productService: IProductService, private responseService: ResponseService) {}
 
     async getProducts() {
-        return this.responseService.success({
-            statusCode: 200,
-            body: this.productService.getProductList()
-        })
+        try {
+            const body = await this.productService.getProductList()
+            return this.responseService.success({
+                statusCode: 200,
+                body
+            })
+        } catch (e) {
+            console.error(e)
+            return this.responseService.error(new Error('Internal Server Error'), { statusCode: 500 })
+        }
     }
 
     async getProductById({ pathParameters }) {
-        const { productId } = pathParameters;
+        try {
+            const {productId} = pathParameters;
 
-        const product = this.productService.getProductById(productId)
+            const product = await this.productService.getProductById(productId)
 
-        if (!product) {
-            return this.responseService.error(new Error('Product not found'), { statusCode: 404 })
+            if (!product) {
+                return this.responseService.error(new Error('Product not found'), {statusCode: 404})
+            }
+
+            return this.responseService.success({
+                statusCode: 200,
+                body: product
+            })
+        } catch (e) {
+            console.error(e)
+            return this.responseService.error(new Error('Internal Server Error'), { statusCode: 500 })
         }
-
-        return this.responseService.success({
-            statusCode: 200,
-            body: product
-        })
     }
 
     static create(productService: IProductService, responseService: ResponseService) {

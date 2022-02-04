@@ -1,27 +1,43 @@
 import { IProductService } from './types'
-import { Client, QueryConfig } from 'pg';
+import { Pool, QueryConfig } from 'pg';
 
 export class PgProductService implements IProductService {
-    protected table = 'products'
+    protected table = 'products';
 
-    constructor(private dbClient: Client){}
+    constructor(private dbPool: Pool){}
 
     async getProductList() {
-        const query = {
-            text: `SELECT * FROM ${this.table}`,
-        } as QueryConfig;
+        const client = await this.dbPool.connect();
+        try {
+            const query = {
+                text: `SELECT * FROM ${this.table}`,
+            } as QueryConfig;
 
-        const { rows } = await this.dbClient.query(query);
-        return rows ?? null;
+            const {rows} = await client.query(query);
+            return rows ?? null;
+        } catch (e) {
+            console.error(e)
+            throw e
+        } finally {
+            client.release();
+        }
     }
 
     async getProductById(productId) {
-        const query = {
-            text: `SELECT * FROM ${this.table} WHERE id = $1`,
-            values: [productId],
-        } as QueryConfig;
+        const client = await this.dbPool.connect();
+        try {
+            const query = {
+                text: `SELECT * FROM ${this.table} WHERE id = $1`,
+                values: [productId],
+            } as QueryConfig;
 
-        const { rows } = await this.dbClient.query(query);
-        return rows[0] ?? null;
+            const {rows} = await client.query(query);
+            return rows[0] ?? null;
+        } catch (e) {
+            console.error(e)
+            throw e
+        } finally {
+            client.release();
+        }
     }
 }

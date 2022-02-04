@@ -24,6 +24,7 @@ custom:
   webpack:
     webpackConfig: './webpack.config.js'
     includeModules: true
+    dotenvVars: ${file(configs.js)}
 
 plugins:
   - serverless-webpack
@@ -33,12 +34,6 @@ provider:
   runtime: nodejs12.x
   stage: dev
   region: eu-west-1
-  ENV_STAGE: ${opt:stage, 'dev'}
-    PGHOST: ${self:custom.dotenvVars.PGHOST, env:PGHOST, ''}
-    PGUSER: ${self:custom.dotenvVars.PGUSER, env:PGUSER, ''}
-    PGDATABASE: ${self:custom.dotenvVars.PGDATABASE, env:PGDATABASE, ''}
-    PGPASSWORD: ${self:custom.dotenvVars.PGPASSWORD, env:PGPASSWORD, ''}
-    PGPORT: ${self:custom.dotenvVars.PGPORT, env:PGPORT, ''}
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:
@@ -83,7 +78,7 @@ functions:
 
   getProducts:
     handler: main.getProducts
-#    The following are a few example events you can configure
+    #    The following are a few example events you can configure
 #    NOTE: Please make sure to change your handler code to work with those events
 #    Check the event documentation for details
     events:
