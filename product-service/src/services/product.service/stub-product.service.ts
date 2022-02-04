@@ -67,4 +67,8 @@ export class StubProductService implements IProductService {
 
         return productsList.find(({ id }) => id === productId)
     }
+
+    async createProduct(product) {
+        return product
+    }
 }

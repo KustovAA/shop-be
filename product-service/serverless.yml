@@ -65,6 +65,16 @@ provider:
 #    - exclude-me-dir/**
 
 functions:
+  createProduct:
+    handler: main.createProduct
+    events:
+      - http:
+          path: products/
+          method: post
+          request:
+            schema:
+              application/json: ${file(src/schemas/createProductSchema.json)}
+
   getProductById:
     handler: main.getProductById
     events:

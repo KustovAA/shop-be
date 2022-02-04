@@ -23,10 +23,13 @@ const dbPool = new Pool({
 const app = App.create(new PgProductService(dbPool), new ResponseService())
 
 export const getProducts = () => {
-    return app.getProducts()
+    return app.getProducts();
 }
 
 export const getProductById = (event) => {
-    return app.getProductById(event)
+    return app.getProductById(event);
 }
 
+export const createProduct = (event) => {
+    return app.createProduct(event);
+}

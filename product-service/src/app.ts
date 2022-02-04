@@ -39,6 +39,24 @@ export class App {
         }
     }
 
+    async createProduct({ body }) {
+        try {
+            const product = await this.productService.createProduct(body)
+
+            if (!product) {
+                return this.responseService.error(new Error('Product was not created'), {statusCode: 500})
+            }
+
+            return this.responseService.success({
+                statusCode: 200,
+                body: product
+            })
+        } catch (e) {
+            console.error(e)
+            return this.responseService.error(new Error('Internal Server Error'), { statusCode: 500 })
+        }
+    }
+
     static create(productService: IProductService, responseService: ResponseService) {
         if (!app) {
             app = new App(productService, responseService)
