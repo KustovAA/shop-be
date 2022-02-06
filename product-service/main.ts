@@ -33,3 +33,7 @@ export const getProductById = (event) => {
 export const createProduct = (event) => {
     return app.createProduct(event);
 }
+
+export const createProductBatch = (event) => {
+    return app.createProductBatch(event)
+}

@@ -71,4 +71,8 @@ export class StubProductService implements IProductService {
     async createProduct(product) {
         return product
     }
+
+    async createProductBatch(products) {
+        return products
+    }
 }

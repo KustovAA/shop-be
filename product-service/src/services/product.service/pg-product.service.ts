@@ -71,4 +71,34 @@ export class PgProductService implements IProductService {
             client.release();
         }
     }
+
+    async createProductBatch(products) {
+        const client = await this.dbPool.connect();
+        let i = 1
+        try {
+            const query = {
+                text: `
+                    INSERT INTO ${this.table}(title, description, price, logo, count)
+                    VALUES
+                       ${products.map(() => `($${i++}, $${i++}, $${i++}, $${i++}, $${i++})`).join(',\n')}
+                `,
+                values: products.flatMap(({
+                  title,
+                  description,
+                  price,
+                  logo,
+                  count = 0
+                }) => [title, description, price, logo || 'https://r2.readrate.com/img/pictures/basic/792/792601/7926014/w800h317-a1bf3137.jpg', count]),
+            } as QueryConfig;
+
+            await client.query(query);
+
+            return products;
+        } catch (e) {
+            console.error(e)
+            throw e
+        } finally {
+            client.release();
+        }
+    }
 }

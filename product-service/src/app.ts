@@ -58,6 +58,26 @@ export class App {
         }
     }
 
+    async createProductBatch(event) {
+        const { Records } = event;
+        const body = Records.map((record) => typeof record.body === 'string' ? JSON.parse(record.body) : record.body);
+        try {
+            const products = await this.productService.createProductBatch(body)
+
+            if (!products) {
+                return this.responseService.error(new Error('Products were not created'), {statusCode: 500})
+            }
+
+            return this.responseService.success({
+                statusCode: 200,
+                body: products,
+            })
+        } catch (e) {
+            console.error(e)
+            return this.responseService.error(new Error('Internal Server Error'), { statusCode: 500 })
+        }
+    }
+
     static create(productService: IProductService, responseService: ResponseService) {
         if (!app) {
             app = new App(productService, responseService)

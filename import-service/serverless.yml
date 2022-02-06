@@ -45,6 +45,11 @@ provider:
         - "s3:*"
       Resource:
         - "arn:aws:s3:::shop-storage-bucket/*"
+    - Effect: "Allow"
+      Action:
+        - "sqs:*"
+      Resource:
+        - "arn:aws:sqs:eu-west-1:531502730024:shop-queue"
 
 # you can add statements to the Lambda function's IAM Role here
 #  iamRoleStatements:

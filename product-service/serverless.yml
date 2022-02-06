@@ -75,6 +75,13 @@ functions:
             schema:
               application/json: ${file(src/schemas/createProductSchema.json)}
 
+  createProductBatch:
+    handler: main.createProductBatch
+    events:
+      - sqs:
+          batchSize: 2
+          arn: arn:aws:sqs:eu-west-1:531502730024:shop-queue
+
   getProductById:
     handler: main.getProductById
     events:
