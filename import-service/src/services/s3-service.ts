@@ -24,23 +24,28 @@ export class S3Service {
         this.bucketName = bucketName
     }
 
-    async sendSqsMessage(getObjectCommand: GetObjectCommand) {
-        const object = await this.s3Client.send(getObjectCommand);
+    sendSqsMessage(getObjectCommand: GetObjectCommand) {
+        return new Promise(async (resolve) => {
+            const object = await this.s3Client.send(getObjectCommand);
 
-        const handleObjectLine = (MessageBody) => {
-            this.sqsClient.send(
-                new SendMessageCommand({
-                    QueueUrl,
-                    MessageBody,
-                })
-            )
-        }
+            const handleObjectLine = (MessageBody) => {
+                this.sqsClient.send(
+                    new SendMessageCommand({
+                        QueueUrl,
+                        MessageBody,
+                    })
+                )
+            }
 
-        createInterface({
-            input: object.Body.pipe(csv()),
+            createInterface({
+                input: object.Body.pipe(csv()),
+            })
+                .on('line', handleObjectLine)
+                .on('close', () => {
+                    console.log('File has been read')
+                    resolve()
+                });
         })
-            .on('line', handleObjectLine)
-            .on('close', () => console.log('File has been read'));
     };
 
     async upload(fileName) {

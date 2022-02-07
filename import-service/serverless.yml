@@ -102,6 +102,8 @@ functions:
           bucket: "shop-storage-bucket"
           event: "s3:ObjectCreated:*"
           existing: true
+          rules:
+            - prefix: "uploaded/"
 #      - websocket: $connect
 #      - s3: ${env:BUCKET}
 #      - schedule: rate(10 minutes)
