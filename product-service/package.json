@@ -8,6 +8,7 @@
     "deploy": "sls deploy --verbose"
   },
   "dependencies": {
+    "@aws-sdk/client-sns": "^3.49.0",
     "dotenv": "^16.0.0",
     "pg": "^8.7.1",
     "source-map-support": "^0.5.10"

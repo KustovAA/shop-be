@@ -1,10 +1,16 @@
+import { SNSClient, PublishCommand } from '@aws-sdk/client-sns';
 import { IProductService } from './services/product.service';
 import { ResponseService } from '../../common/services/response.service';
 
 let app
+const { SNS_ARN = '' } = process.env;
 
 export class App {
-    private constructor(private productService: IProductService, private responseService: ResponseService) {}
+    snsClient: SNSClient;
+
+    private constructor(private productService: IProductService, private responseService: ResponseService) {
+        this.snsClient = new SNSClient({ region: 'eu-west-1' });
+    }
 
     async getProducts() {
         try {
@@ -67,6 +73,16 @@ export class App {
             if (!products) {
                 return this.responseService.error(new Error('Products were not created'), {statusCode: 500})
             }
+
+            const params = {
+                Subject: 'Products was added',
+                Message: JSON.stringify(products),
+                TopicArn: SNS_ARN,
+            };
+
+            const command = new PublishCommand(params);
+
+            await this.snsClient.send(command);
 
             return this.responseService.success({
                 statusCode: 200,

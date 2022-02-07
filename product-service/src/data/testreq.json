@@ -5,6 +5,9 @@
     "price": 334,
     "count": 11
   },
+  "Records": [{
+    "body": "{title: '13', description: 'sdvc', price: 32, count: 3}"
+  }],
   "resource": "/{proxy+}",
   "path": "/path/to/resource",
   "httpMethod": "POST",
